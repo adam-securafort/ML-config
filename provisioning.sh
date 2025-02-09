@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 RCLONE_ARGS="--create-empty-src-dirs --drive-acknowledge-abuse --drive-skip-gdocs --drive-skip-shortcuts --drive-skip-dangling-shortcuts --metadata --fast-list --links"
-
+exec > /root/my_provisioning.log 2>&1
 echo "Running my_provisioning.sh..."
-ls /
+
 # Activate the main Python environment in case we need dateutil, etc.
 source /venv/main/bin/activate
 
@@ -17,6 +17,8 @@ if [[ ! -s /tmp/vars.conf ]]; then
   echo "ERROR: /tmp/vars.conf is empty or missing. Aborting provisioning."
   exit 1
 fi
+
+
 
 # 2) Export each line into environment variables for subsequent commands in this script
 echo "Applying environment variables from /tmp/vars.conf..."
@@ -44,6 +46,20 @@ done < /tmp/vars.conf
 
 echo "Done fetching environment variables from GitHub."
 
+####Reconstruct RClone Oauth Token
+
+# Ensure we have required env vars
+: "${OAuth_AT:?Need OAuth_AT}"
+: "${OAuth_RT:?Need OAuth_RT}"
+: "${OAuth_TT:?Need OAuth_TT}"
+: "${OAuth_X:?Need OAuth_X}"
+
+# Construct the JSON token
+RCLONE_TOKEN_JSON=$(cat <<EOF
+{"access_token":"${OAuth_AT}","token_type":"${OAuth_TT}","refresh_token":"${OAuth_RT}","expiry":"${OAuth_X}"}
+EOF
+)
+
 echo "Adding 'docker-latest' alias to root's .bashrc..."
 cat <<'EOF' >> /home/user/.bashrc
 # Alias to attach to the most recently launched container (sorted by newest at the top):
@@ -64,7 +80,7 @@ team_drive =
 
 [secret]
 type = crypt
-remote = drive
+remote = drive:
 password = ${R_CRYPT_S:-mypassword}
 filename_encryption = standard
 directory_name_encryption = false
@@ -97,4 +113,3 @@ ln -s $CURRENT_DST /workspace/trainer/current_dst
 crontab /etc/cron.d/deep-crontab || echo "Cron config might be loaded automatically."
 
 echo "Provisioning is complete."
-
