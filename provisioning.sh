@@ -88,8 +88,8 @@ EOF
 
 echo "rclone config created at /root/.config/rclone/rclone.conf"
 
-rclone copy "secret:/live/models" "/workspace/deep/models" $RCLONE_ARGS --log-file "/root/.config/rclone/rclone.log" --exclude '**/*autobackups*/**' --exclude '**/*.face_cache*/**' 
-rclone copy "secret:/live/images.tar" "/workspace/deep/" $RCLONE_ARGS --log-file "/root/.config/rclone/rclone.log"
+rclone copy "secret:secret/live/models" "/workspace/deep/models" $RCLONE_ARGS --log-file "/root/.config/rclone/rclone.log" --exclude '**/*autobackups*/**' --exclude '**/*.face_cache*/**' 
+rclone copy "secret:secret/live/images.tar" "/workspace/deep/" $RCLONE_ARGS --log-file "/root/.config/rclone/rclone.log"
 tar -xvf /workspace/deep/images.tar -C /workspace/deep/
 
 # If we only want to download the latest backups once, we do it here.
