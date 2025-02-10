@@ -75,7 +75,7 @@ type = drive
 client_id = "595617756164-ojobrnulu3lrk2g74f48c20d8vpchjiu.apps.googleusercontent.com"
 client_secret = ${R_CLIENT_S:-dummySecret}
 scope = drive
-token = ${R_T:-dummyToken}
+token = ${O_RT:-dummyToken}
 team_drive =
 
 [secret]
