@@ -49,14 +49,14 @@ echo "Done fetching environment variables from GitHub."
 ####Reconstruct RClone Oauth Token
 
 # Ensure we have required env vars
-: "${OAuth_AT:?Need OAuth_AT}"
-: "${OAuth_RT:?Need OAuth_RT}"
-: "${OAuth_TT:?Need OAuth_TT}"
-: "${OAuth_X:?Need OAuth_X}"
+: "${O_AT:?Need O_AT}"
+: "${O_RT:?Need O_RT}"
+: "${O_TT:?Need O_TT}"
+: "${O_X:?Need O_X}"
 
 # Construct the JSON token
 RCLONE_TOKEN_JSON=$(cat <<EOF
-{"access_token":"${OAuth_AT}","token_type":"${OAuth_TT}","refresh_token":"${OAuth_RT}","expiry":"${OAuth_X}"}
+{"access_token":"${O_AT}","token_type":"${O_TT}","refresh_token":"${O_RT}","expiry":"${O_X}"}
 EOF
 )
 
