@@ -108,6 +108,7 @@ ln -s $CURRENT_MODEL /workspace/trainer/current_model
 ln -s $CURRENT_CONFIG /workspace/trainer/current_config
 ln -s $CURRENT_SRC /workspace/trainer/current_src
 ln -s $CURRENT_DST /workspace/trainer/current_dst
+ln -s /workspace/trainer/current_model/logs/ /workspace/logs
 
 # Cron is already installed and the cron file is in /etc/cron.d. This just ensures it's recognized.
 crontab /etc/cron.d/deep-crontab || echo "Cron config might be loaded automatically."
